@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:islami_app/core/utils/app_colors.dart';
-import 'package:islami_app/core/utils/app_styles.dart';
-import 'package:islami_app/home_screen.dart';
+import 'package:islami_app/screens/home/home.dart';
+
+import 'core/app_colors.dart';
+import 'core/cache_helper.dart';
+import 'core/styles.dart';
 
 class IntroScreen extends StatelessWidget {
   static const String routeName = "intro";
@@ -11,43 +13,45 @@ class IntroScreen extends StatelessWidget {
 
   List<PageViewModel> listPagesViewModel = [
     PageViewModel(
-      titleWidget: Text("Welcome To Islmi App", style: AppStyles.titleSmall),
-      bodyWidget: Text(""),
+      titleWidget: Text("Welcome To Islmi App", style: AppStyles.titleStyle),
+      body: "",
       image: Image.asset("assets/images/intro0.png"),
     ),
     PageViewModel(
-      titleWidget: Text("Welcome To Islmi App", style: AppStyles.titleSmall),
+      titleWidget: Text("Welcome To Islmi App", style: AppStyles.titleStyle),
       bodyWidget: Text(
-        "Welcome to the app! This is a description of how it works",
-        style: AppStyles.bodySmall,
+        "We Are Very Excited To Have You In Our Community",
         textAlign: TextAlign.center,
+        style: AppStyles.bodyStyle,
       ),
+
       image: Image.asset("assets/images/intro1.png"),
     ),
     PageViewModel(
-      titleWidget: Text("Reading the Quran", style: AppStyles.titleSmall),
+      titleWidget: Text("Reading the Quran", style: AppStyles.titleStyle),
       bodyWidget: Text(
-        "We Are Very Excited To Have You In Our Community",
-        style: AppStyles.bodySmall,
+        "Read, and your Lord is the Most Generous",
         textAlign: TextAlign.center,
+        style: AppStyles.bodyStyle,
       ),
 
       image: Image.asset("assets/images/intro2.png"),
     ),
     PageViewModel(
-      titleWidget: Text("Reading the Quran", style: AppStyles.titleSmall),
+      titleWidget: Text("Bearish", style: AppStyles.titleStyle),
       bodyWidget: Text(
-        "Read, and your Lord is the Most Generous",
-        style: AppStyles.bodySmall,
+        "Praise the name of your Lord, the Most High",
         textAlign: TextAlign.center,
+        style: AppStyles.bodyStyle,
       ),
+
       image: Image.asset("assets/images/intro3.png"),
     ),
     PageViewModel(
-      titleWidget: Text("Bearish", style: AppStyles.titleSmall),
+      titleWidget: Text("Holy Quran Radio", style: AppStyles.titleStyle),
       bodyWidget: Text(
-        "Praise the name of your Lord, the Most High",
-        style: AppStyles.bodySmall,
+        "You can listen to the Holy Quran Radio through the application for free and easily",
+        style: AppStyles.bodyStyle,
         textAlign: TextAlign.center,
       ),
       image: Image.asset("assets/images/intro4.png"),
@@ -58,30 +62,39 @@ class IntroScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntroductionScreen(
       pages: listPagesViewModel,
-      globalBackgroundColor: Color(0xFF202020),
+      globalBackgroundColor: AppColors.black,
+      showNextButton: true,
       bodyPadding: EdgeInsets.only(top: 266),
-      showBackButton: true,
-      back: Text("Back", style: AppStyles.bodySmall),
-      globalHeader: Image.asset("assets/images/islami_top.png"),
-      dotsFlex: 3,
       showSkipButton: true,
-      onSkip: () {
+      onSkip: () async {
+        await CacheHelper.saveBool("introScreenFlag", true);
+
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       },
-      skip: Text("Skip", style: AppStyles.bodySmall),
-      showNextButton: true,
+      skip: Text("Skip", style: AppStyles.bodyStyle),
+      showBackButton: true,
+      back: Text("Back", style: AppStyles.bodyStyle),
+
       dotsDecorator: DotsDecorator(
         color: AppColors.grey,
-        activeColor: AppColors.gold,
-        activeSize: Size(18, 7),
+
+        activeColor: AppColors.primary,
+
+        activeSize: Size(22, 7),
         activeShape: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: AppColors.grey),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.transparent),
+        ),
+        shape: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.transparent),
         ),
       ),
-      next: Text("Next", style: AppStyles.bodySmall),
-      done: Text("Done", style: AppStyles.bodySmall),
-      onDone: () {
+      globalHeader: Image.asset("assets/images/islami_top.png"),
+      next: Text("Next", style: AppStyles.bodyStyle),
+      done: Text("Done", style: AppStyles.bodyStyle),
+      onDone: () async {
+        await CacheHelper.saveBool("introScreenFlag", true);
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       },
     );
